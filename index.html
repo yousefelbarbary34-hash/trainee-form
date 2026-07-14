@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استمارة تقييم وتحليل حالة المتدرب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141a1f;
+    --paper:#f4f2ec;
+    --panel:#ffffff;
+    --coral:#e2472f;
+    --sage:#5c7a6b;
+    --line:#dcd7cb;
+    --muted:#6b6f73;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* pulse divider signature element */
+  .pulse{
+    width:100%;
+    height:34px;
+    overflow:hidden;
+    opacity:.55;
+  }
+  .pulse svg{width:100%;height:100%;display:block;}
+
+  header.hero{
+    background:var(--ink);
+    color:var(--paper);
+    padding:56px 24px 44px;
+    position:relative;
+  }
+  .hero-inner{
+    max-width:860px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.14em;
+    color:var(--coral);
+    text-transform:uppercase;
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:clamp(28px,4.4vw,42px);
+    margin:0 0 10px;
+    line-height:1.25;
+  }
+  .hero p.sub{
+    margin:0;
+    color:#c9cdd1;
+    font-size:15.5px;
+    max-width:560px;
+  }
+  .hero .pulse{margin-top:32px;}
+
+  main{
+    max-width:860px;
+    margin:0 auto;
+    padding:40px 24px 90px;
+  }
+
+  .progress-rail{
+    display:flex;
+    gap:8px;
+    margin-bottom:40px;
+  }
+  .progress-rail span{
+    flex:1;
+    height:4px;
+    background:var(--line);
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+  }
+  .progress-rail span::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:var(--coral);
+    transform:scaleX(1);
+    transform-origin:right;
+  }
+
+  section.card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:32px 30px;
+    margin-bottom:26px;
+    position:relative;
+  }
+  .step-tag{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .step-num{
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:34px;
+    color:var(--coral);
+    line-height:1;
+  }
+  .step-title{
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:20px;
+  }
+  .step-desc{
+    font-size:13.5px;
+    color:var(--muted);
+    margin:2px 0 0 48px;
+  }
+
+  .field{
+    margin-bottom:20px;
+  }
+  .field label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:8px;
+    color:var(--ink);
+  }
+  .field .hint{
+    font-weight:400;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+  input[type="text"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  textarea{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:#fbfaf7;
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--sage);
+    box-shadow:0 0 0 3px rgba(92,122,107,.15);
+  }
+  textarea{resize:vertical;min-height:80px;}
+
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .grid-3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:600px){
+    .grid-2, .grid-3{grid-template-columns:1fr;}
+    section.card{padding:24px 18px;}
+  }
+
+  .yesno{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .yesno label{
+    flex:1;
+    text-align:center;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    background:#fbfaf7;
+    transition:background .15s, border-color .15s;
+  }
+  .yesno input{display:none;}
+  .yesno input:checked + span{color:var(--coral);}
+  .yesno label:has(input:checked){
+    border-color:var(--coral);
+    background:#fdf1ef;
+  }
+
+  .chip-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .chip{
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:9px 18px;
+    font-size:13.5px;
+    background:#fbfaf7;
+    cursor:pointer;
+    user-select:none;
+  }
+  .chip input{display:none;}
+  .chip:has(input:checked){
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+
+  .scale{
+    display:flex;
+    gap:8px;
+  }
+  .scale label{
+    flex:1;
+    text-align:center;
+    padding:12px 6px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    font-size:13px;
+    cursor:pointer;
+    background:#fbfaf7;
+  }
+  .scale input{display:none;}
+  .scale label:has(input:checked){
+    border-color:var(--sage);
+    background:#eef2ef;
+    color:var(--sage);
+    font-weight:700;
+  }
+
+  .divider-note{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:12.5px;
+    margin:6px 0 18px;
+  }
+  .divider-note::before{
+    content:"";
+    width:6px;height:6px;border-radius:50%;
+    background:var(--coral);
+    flex:none;
+  }
+
+  footer.submit-bar{
+    max-width:860px;
+    margin:0 auto;
+    padding:0 24px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .submit-bar p{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:0;
+    max-width:420px;
+  }
+  button.primary{
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    background:var(--coral);
+    color:#fff;
+    border:none;
+    padding:15px 34px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .12s, box-shadow .12s;
+    box-shadow:0 6px 18px rgba(226,71,47,.28);
+  }
+  button.primary:hover{transform:translateY(-1px);}
+  button.primary:focus-visible{outline:3px solid var(--sage);outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">استمارة داخلية &mdash; قبل بدء البرنامج التدريبي</p>
+    <h1>تقييم وتحليل حالة المتدرب</h1>
+    <p class="sub">أربع خطوات سريعة تساعد المدرب على بناء برنامج مناسب لحالتك الصحية وأهدافك ومستوى خبرتك.</p>
+    <div class="pulse">
+      <svg viewBox="0 0 600 34" preserveAspectRatio="none">
+        <polyline points="0,17 90,17 110,4 130,30 150,17 220,17 240,8 258,26 276,17 340,17 360,2 382,32 404,17 470,17 490,10 510,24 530,17 600,17"
+          fill="none" stroke="#e2472f" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="progress-rail" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <form id="trainee-form" action="https://formsubmit.co/3lewa2211@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="استمارة تقييم متدرب جديدة">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://formsubmit.co/thank-you">
+
+    <!-- Step 1 -->
+    <section class="card">
+      <div class="step-tag">
+        <span class="step-num">01</span>
+        <span class="step-title">البيانات الأساسية</span>
+      </div>
+      <p class="step-desc" style="margin-bottom:22px;">معلوماتك الشخصية الرئيسية.</p>
+
+      <div class="field">
+        <label for="fullname">الاسم الكامل</label>
+        <input type="text" id="fullname" name="الاسم_الكامل" placeholder="اكتب الاسم رباعيًا">
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="age">السن</label>
+          <input type="number" id="age" name="السن" min="10" max="90">
+        </div>
+        <div class="field">
+          <label for="height">الطول <span class="hint">(سم)</span></label>
+          <input type="number" id="height" name="الطول_سم">
+        </div>
+        <div class="field">
+          <label for="weight">الوزن <span class="hint">(كجم)</span></label>
+          <input type="number" id="weight" name="الوزن_كجم">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="phone">رقم الهاتف</label>
+          <input type="tel" id="phone" name="رقم_الهاتف" placeholder="01xxxxxxxxx">
+        </div>
+        <div class="field">
+          <label for="date">تاريخ تعبئة الاستمارة</label>
+          <input type="date" id="date" name="تاريخ_التعبئة">
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="card">
+      <div class="step-tag">
+        <span class="step-num">02</span>
+        <span class="step-title">الحالة الصحية</span>
+      </div>
+      <p class="step-desc" style="margin-bottom:22px;">لتفادي أي تمرين قد يشكل خطورة على صحتك.</p>
+
+      <div class="field">
+        <label>هل تعاني من أمراض مزمنة؟ <span class="hint">(ضغط، سكري، قلب، غدة درقية...)</span></label>
+        <div class="yesno">
+          <label><input type="radio" name="أمراض_مزمنة" value="نعم"><span>نعم</span></label>
+          <label><input type="radio" name="أمراض_مزمنة" value="لا"><span>لا</span></label>
+        </div>
+        <textarea name="تفاصيل_الأمراض" placeholder="في حالة نعم، برجاء التوضيح"></textarea>
+      </div>
+
+      <div class="field">
+        <label>عمليات جراحية سابقة</label>
+        <div class="yesno">
+          <label><input type="radio" name="عمليات_جراحية" value="نعم"><span>نعم</span></label>
+          <label><input type="radio" name="عمليات_جراحية" value="لا"><span>لا</span></label>
+        </div>
+        <textarea name="تفاصيل_العمليات" placeholder="في حالة نعم، اذكر نوع العملية وتاريخها"></textarea>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="card">
+      <div class="step-tag">
+        <span class="step-num">03</span>
+        <span class="step-title">الهدف من التدريب</span>
+      </div>
+      <p class="step-desc" style="margin-bottom:22px;">اختر ما يناسب حالتك، يمكن اختيار أكثر من هدف.</p>
+
+      <div class="field">
+        <label>الهدف الأساسي</label>
+        <div class="chip-group">
+          <label class="chip"><input type="checkbox" name="الهدف" value="خسارة دهون / تنشيط"> خسارة دهون / تنشيط</label>
+          <label class="chip"><input type="checkbox" name="الهدف" value="زيادة كتلة عضلية"> زيادة كتلة عضلية</label>
+          <label class="chip"><input type="checkbox" name="الهدف" value="لياقة بدنية عامة"> لياقة بدنية عامة</label>
+          <label class="chip"><input type="checkbox" name="الهدف" value="تأهيل بعد إصابة"> تأهيل بعد إصابة</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>هل توجد مناسبة أو موعد محدد تسعى للوصول له؟</label>
+        <div class="grid-2">
+          <input type="text" name="المناسبة" placeholder="مثال: فرح، سفر، مسابقة...">
+          <input type="date" name="موعد_المناسبة">
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="card">
+      <div class="step-tag">
+        <span class="step-num">04</span>
+        <span class="step-title">الخبرة التدريبية ومستوى النشاط</span>
+      </div>
+      <p class="step-desc" style="margin-bottom:22px;">لتحديد نقطة البداية المناسبة للبرنامج.</p>
+
+      <div class="field">
+        <label>مستوى الخبرة التدريبية</label>
+        <div class="scale">
+          <label><input type="radio" name="مستوى_الخبرة" value="مبتدئ">مبتدئ</label>
+          <label><input type="radio" name="مستوى_الخبرة" value="متوسط">متوسط</label>
+          <label><input type="radio" name="مستوى_الخبرة" value="متقدم">متقدم</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>طبيعة العمل اليومي</label>
+        <div class="yesno">
+          <label><input type="radio" name="طبيعة_العمل" value="حركي"><span>حركي</span></label>
+          <label><input type="radio" name="طبيعة_العمل" value="غير حركي (مكتبي)"><span>غير حركي (مكتبي)</span></label>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="days">عدد أيام النشاط أسبوعيًا</label>
+          <input type="number" id="days" name="أيام_النشاط_أسبوعيًا" min="0" max="7">
+        </div>
+        <div class="field">
+          <label for="pref">الفترة المفضلة للتدريب</label>
+          <input type="text" id="pref" name="الفترة_المفضلة" placeholder="صباحًا / مساءً">
+        </div>
+      </div>
+    </section>
+
+  </form>
+</main>
+
+<footer class="submit-bar">
+  <p>البيانات المدخلة تُستخدم فقط من قِبل المدرب المختص لبناء برنامج تدريبي وغذائي مناسب لحالتك.</p>
+  <button class="primary" type="submit" form="trainee-form">إرسال الاستمارة</button>
+</footer>
+
+</body>
+</html>
